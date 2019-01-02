@@ -13,6 +13,9 @@ public class JSONReader {
     //a separate method or class will deal with parsing the entire directory
     //the JSON file contains an ARRAY of coordinates and speed sampled at once per second
     
+    //code based on:
+    //https://www.mkyong.com/java/json-simple-example-read-and-write-json/
+    
     public static void main(String[] args) {
         JSONParser parser = new JSONParser();
         
@@ -24,6 +27,7 @@ public class JSONReader {
             JSONArray arr = (JSONArray) jo.get("name that holds the array");
             //JSONArrays = lists, noted by brackets []
             //assuming file has an array
+            //need to store parsed information in some way that can be later used in data visualization
             
         } catch (FileNoteFoundException e) {
             e.printStackTrace();
