@@ -19,6 +19,8 @@ public class JSONReader {
     //https://leafletjs.com/examples/geojson/
     //https://stackoverflow.com/questions/31728446/write-a-json-file-in-java
     
+    //https://www.openstreetmap.org/#map=5/38.007/-95.844
+    
     public static void main(String[] args) {
         JSONParser parser = new JSONParser();
         
