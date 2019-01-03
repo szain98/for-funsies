@@ -23,8 +23,9 @@ public class JSONReader {
         JSONParser parser = new JSONParser();
         
         try {
-            FileWriter geoFile = new FileWriter();
-            Object o = parser.parse(new FileReader("data path to file folder"));
+            FileWriter geoFile = new FileWriter("data.geojson"); //might need to specify location on computer w/ path
+            
+            Object o = parser.parse(new FileReader("D://szain/Documents/Progr-Funsies/for-funsies/comma.ai/data"));
             JSONObject jo = (JSONObject) o;
             //JSONObjects = (name, value) pairs, noted by curly brackets {}
             //obj has get method --> returns an object I think; need to cast it 
