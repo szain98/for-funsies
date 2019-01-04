@@ -27,7 +27,7 @@ public class JSONReader {
         try {
             FileWriter geoFile = new FileWriter("data.geojson"); //might need to specify location on computer w/ path
             
-            Object o = parser.parse(new FileReader("D://szain/Documents/Progr-Funsies/for-funsies/comma.ai/data"));
+            Object o = parser.parse(new FileReader("must be the name of a file")); //is there a way to loop through entire data set
             JSONObject jo = (JSONObject) o;
             //JSONObjects = (name, value) pairs, noted by curly brackets {}
             //obj has get method --> returns an object I think; need to cast it 
@@ -35,6 +35,8 @@ public class JSONReader {
             //JSONArrays = lists, noted by brackets []
             //assuming file has an array
             //need to store parsed information in some way that can be later used in data visualization
+            geoFile.write(JSON_object.toJSONstring());
+            geoFile.flush(); //what da heck does this method do
             
         } catch (FileNoteFoundException e) {
             e.printStackTrace();
