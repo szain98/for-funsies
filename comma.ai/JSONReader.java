@@ -24,7 +24,7 @@ public class JSONReader {
     
     //https://www.openstreetmap.org/#map=5/38.007/-95.844
     
-    public int colorCountDet(int speed) {
+    public int colorCountDet(long speed) {
         if () {
             return 0;
         } else if () {
@@ -92,9 +92,13 @@ public class JSONReader {
                 JSONObject info = (JSONObject) iter.next();
                 (Long, Long) coord = info.get("lat"), info.get("lng");
                 if (coordColors.containsKey(coord)) {
-                
+                    //get the value from the key (coord)
+                    //add one to respective index
                 } else {
-                  int[] colors = new int[7];
+                    int[] colors = new int[7];
+                    long speed = info.get("speed");
+                    colors[colorCountDet(speed)] += 1;
+                    coordColors.add(coord, colors); //add the new key,value pair
                 }
             }
             
