@@ -37,7 +37,7 @@ public class JSONReader {
             return 4;
         } else if (speed >= 50.0 && speed < 60.0) {
             return 5;
-        } else {
+        } else if (speed >= 60.0) { //not sure if this is exhaustive but I assume it is
             return 6;
         }
     }
@@ -78,7 +78,7 @@ public class JSONReader {
             Map<(Long, Long), int[]> coordColors = new HashMap<>();
             
             //tuple of longs = coordinates; string = hex value of color
-            while (iter.hasNext()) {
+            while (iter.hasNext()) { //MAY FIRST TEST IF ONE ITERATION WORKS BECAUSE OF HOW LONG ONE JSON FILE IS
                 //color relates to speed
                 /* HTML HEX COLOR CODES
                  * RED: 0xFF0000 --> [0, 10)
@@ -103,6 +103,7 @@ public class JSONReader {
             }
             
             //writing to the geoJSON file
+            //at this point, all coords have their 
             geoFile.write(JSON_object.toJSONstring());
             geoFile.flush(); //what da heck does this method do
             
