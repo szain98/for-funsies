@@ -24,6 +24,24 @@ public class JSONReader {
     
     //https://www.openstreetmap.org/#map=5/38.007/-95.844
     
+    public int colorCountDet(int speed) {
+        if () {
+            return 0;
+        } else if () {
+            return 1;
+        } else if () {
+            return 2;
+        } else if () {
+            return 3;
+        } else if () {
+            return 4;
+        } else if () {
+            return 5;
+        } else {
+            return 6;
+        }
+    }
+    
     public static void main(String[] args) {
         JSONParser parser = new JSONParser();
         
@@ -43,18 +61,41 @@ public class JSONReader {
             
             //reading the JSON file
             Object o = parser.parse(new FileReader("must be the name of a file")); //check if it's file name or path to file
+            /* JSON file format
+             * 3 objects: start time, coords, end time
+             * "start_time": String
+             * "coords": ObjectArray --> one element in array = "lat": Long, "speed": Long, "lng": Long, "dist": Long, "index": int
+             * "end_time": String
+             */
             JSONObject jo = (JSONObject) o;
             //JSONObjects = (name, value) pairs, noted by curly brackets {}
             //obj has get method --> returns an object I think; need to cast it 
-            JSONArray arr = (JSONArray) jo.get("name that holds the array");
+            JSONArray arr = (JSONArray) jo.get("coords");
             //JSONArrays = lists, noted by brackets []
             //assuming file has an array
             //need to store parsed information in some way that can be later used in data 
-            Iterator<String> it = arr.iterator();
-            Map<(Long, Long), String> coordColors = new HashMap<>();
+            Iterator<String> iter = arr.iterator();
+            Map<(Long, Long), int[]> coordColors = new HashMap<>();
+            
             //tuple of longs = coordinates; string = hex value of color
-            while (it.hasNext()) {
-                //color relates to speed 
+            while (iter.hasNext()) {
+                //color relates to speed
+                /* HTML HEX COLOR CODES
+                 * RED: 0xFF0000 --> [0, 10)
+                 * ORANGE: 0xFFA233 --> [10, 20)
+                 * YELLOW: 0xFFFF00 --> [20, 30)
+                 * GREEN: 0x008000 --> [30, 40)
+                 * BLUE: 0x0074FF --> [40, 50)
+                 * PURPLE: 0x800080 --> [50, 60)
+                 * VIOLET: 0x3E0099 --> 60+
+                 */
+                JSONObject info = (JSONObject) iter.next();
+                (Long, Long) coord = info.get("lat"), info.get("lng");
+                if (coordColors.containsKey(coord)) {
+                
+                } else {
+                  int[] colors = new int[7];
+                }
             }
             
             //writing to the geoJSON file
