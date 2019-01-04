@@ -25,17 +25,17 @@ public class JSONReader {
     //https://www.openstreetmap.org/#map=5/38.007/-95.844
     
     public int colorCountDet(long speed) {
-        if () {
+        if (speed >= 0.0 && speed < 10.0) {
             return 0;
-        } else if () {
+        } else if (speed >= 10.0 && speed < 20.0) {
             return 1;
-        } else if () {
+        } else if (speed >= 20.0 && speed < 30.0) {
             return 2;
-        } else if () {
+        } else if (speed >= 30.0 && speed < 40.0) {
             return 3;
-        } else if () {
+        } else if (speed >= 40.0 && speed < 50.0) {
             return 4;
-        } else if () {
+        } else if (speed >= 50.0 && speed < 60.0) {
             return 5;
         } else {
             return 6;
