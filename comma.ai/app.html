@@ -3,6 +3,7 @@
     <title>Trip Speed Visualization</title>
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css"/>
     <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+    <script src="jquery-2.1.1.min.js"></script>
     <style>
         #map{ width: 900px; height: 500px; }
     </style>
@@ -20,6 +21,7 @@
             maxZoom: 17,
             minZoom: 9
         }).addTo(map);
+        
     $.getJSON("geoFile.geojson", function(data) {
         L.geoJSON(data.features, function(point){
             switch (point.color) {
@@ -31,7 +33,7 @@
                 case 5: return {color: "#800080"};
                 case 6: return {color: "#3e0099"};
             }
-        })
+        }).addTo(map);
     });
         
     </script>
