@@ -62,7 +62,7 @@ public class JSONReader {
             }*/ 
             
             //reading the JSON file
-            Object o = parser.parse(new FileReader("must be the name of a file")); //check if it's file name or path to file
+            Object o = parser.parse(new FileReader("2016-07-02--11-56-24.json")); //check if it's file name or path to file
             /* JSON file format
              * 3 objects: start time, coords, end time
              * "start_time": String
