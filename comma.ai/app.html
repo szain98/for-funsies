@@ -16,10 +16,23 @@
     var map = L.map('map').setView([42.35, -71.08], 13);
     L.tileLayer('link to vector map of CA/SF Bay Area',
         {
-            attribution: 'Give credit to website map was found plus where data was found',
+            attribution: 'Give credit to where website map was found plus where data was found',
             maxZoom: 17,
             minZoom: 9
         }).addTo(map);
+    $.getJSON("geoFile.geojson", function(data) {
+        L.geoJSON(data.features, function(point){
+            switch (point.color) {
+                case 0: return {color: "#ff0000"};
+                case 1: return {color: "#ffa233"};
+                case 2: return {color: "#ffff00"};
+                case 3: return {color: "#008000"};
+                case 4: return {color: "#0074ff"};
+                case 5: return {color: "#800080"};
+                case 6: return {color: "#3e0099"};
+            }
+        })
+    });
         
     </script>
 </body>
