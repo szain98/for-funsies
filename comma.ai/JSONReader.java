@@ -3,6 +3,7 @@ import org.json.simple*
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ArrayList;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -23,8 +24,9 @@ public class JSONReader {
     //https://stackoverflow.com/questions/31728446/write-a-json-file-in-java
     
     //https://www.openstreetmap.org/#map=5/38.007/-95.844
+    //https://maptimeboston.github.io/leaflet-intro/
     
-    public int colorCountDet(long speed) {
+    public int colorDet(long speed) {
         if (speed >= 0.0 && speed < 10.0) {
             return 0;
         } else if (speed >= 10.0 && speed < 20.0) {
@@ -75,9 +77,8 @@ public class JSONReader {
             //assuming file has an array
             //need to store parsed information in some way that can be later used in data 
             Iterator<String> iter = arr.iterator();
-            Map<(Long, Long), int[]> coordColors = new HashMap<>();
-            
-            //tuple of longs = coordinates; string = hex value of color
+            Map<(Long, Long), Integer)> coordColors = new HashMap<>(); //tuple of longs = coordinates; int = color index
+            ArrayList<(Long, Long)> totCoords = new ArrayList<>();
             while (iter.hasNext()) { //MAY FIRST TEST IF ONE ITERATION WORKS BECAUSE OF HOW LONG ONE JSON FILE IS
                 //color relates to speed
                 /* HTML HEX COLOR CODES
@@ -90,22 +91,39 @@ public class JSONReader {
                  * VIOLET: 0x3E0099 --> 60+
                  */
                 JSONObject info = (JSONObject) iter.next();
-                (Long, Long) coord = info.get("lat"), info.get("lng");
-                if (coordColors.containsKey(coord)) {
-                    //get the value from the key (coord)
-                    //add one to respective index
+                (Long, Long) coord = ( info.get("lat"), info.get("lng") );
+                if (coordColors.containsKey(coord)) { //this line most likely won't be executed on one trip
+                    continue;
                 } else {
-                    int[] colors = new int[7];
                     long speed = info.get("speed");
-                    colors[colorCountDet(speed)] += 1;
-                    coordColors.add(coord, colors); //add the new key,value pair
+                    int color = colorDet(speed);
+                    coordColors.put(coord, color);
                 }
             }
             
-            //writing to the geoJSON file
-            //at this point, all coords have their 
-            geoFile.write(JSON_object.toJSONstring());
-            geoFile.flush(); //what da heck does this method do
+            //writing to the geoJSON file 
+            JSONObject result = new JSONObject();
+            result.put("type", "FeatureCollection");
+            
+            JSONArray feats = new JSONArray();
+            for (int i = 0; i < totCoords.size(); i++) {
+                (Long, Long) coord = totCoords.get(i);
+                JSONObject point = new JSONObject();
+                
+                point.put("type", "Point");
+                
+                JSONArray coords = new JSONArray();
+                coords.add(coord[0].toString()); 
+                coords.add(coord[1].toString());
+                point.put("coordinates", coords);
+                
+                point.put("color", colorCoords.get(coord).toString());
+            }
+            
+            result.put("features", feats);
+      
+            geoFile.write(result.toJSONstring());
+            geoFile.flush(); //flushes the stream ?
             
         } catch (FileNoteFoundException e) {
             e.printStackTrace();
