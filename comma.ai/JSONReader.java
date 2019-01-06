@@ -1,4 +1,4 @@
-import org.json.simple* 
+import org.json.simple*; 
 //imports JSONArray, JSONObject, JSONParser, ParseException
 
 import java.util.HashMap;
@@ -26,7 +26,7 @@ public class JSONReader {
     //https://www.openstreetmap.org/#map=5/38.007/-95.844
     //https://maptimeboston.github.io/leaflet-intro/
     
-    public int colorDet(long speed) {
+    private int colorDet(long speed) {
         if (speed >= 0.0 && speed < 10.0) {
             return 0;
         } else if (speed >= 10.0 && speed < 20.0) {
@@ -41,6 +41,16 @@ public class JSONReader {
             return 5;
         } else if (speed >= 60.0) { //not sure if this is exhaustive but I assume it is
             return 6;
+        }
+    }
+
+    private class Tuple {
+        Object item1;
+        Object item2;
+
+        private Tuple(Object a, Object b) {
+            this.item1 = a;
+            this.item2 = b;
         }
     }
     
@@ -77,9 +87,9 @@ public class JSONReader {
             //assuming file has an array
             //need to store parsed information in some way that can be later used in data 
             Iterator<String> iter = arr.iterator();
-            Map<(Long, Long), Integer)> coordColors = new HashMap<>(); //tuple of longs = coordinates; int = color index
-            ArrayList<(Long, Long)> totCoords = new ArrayList<>();
-            //while (iter.hasNext()) { //MAY FIRST TEST IF ONE ITERATION WORKS BECAUSE OF HOW LONG ONE JSON FILE IS
+            Map<Tuple<Long>, Integer> coordColors = new HashMap<>(); 
+            ArrayList<Tuple<Long>> totCoords = new ArrayList<>();
+            //while (iter.hasNext()) { 
                 //color relates to speed
                 /* HTML HEX COLOR CODES
                  * RED: 0xFF0000 --> [0, 10)
@@ -91,8 +101,10 @@ public class JSONReader {
                  * VIOLET: 0x3E0099 --> 60+
                  */
                 JSONObject info = (JSONObject) iter.next();
-                (Long, Long) coord = ( info.get("lng"), info.get("lat") );
-                System.out.println(coord);
+                Long lng = info.get("lng"); Long lat = info.get("lat");
+                Tuple<Long> coord = new Tuple(lng, lat);
+                System.out.println(coord.item1); 
+                System.out.println(coord.item2);
                 if (coordColors.containsKey(coord)) { //this line most likely won't be executed on one trip
                     continue;
                 } else {
