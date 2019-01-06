@@ -48,7 +48,7 @@ public class JSONReader {
         JSONParser parser = new JSONParser();
         
         try {
-            FileWriter geoFile = new FileWriter("data.geojson"); //might need to specify location on computer w/ path
+            //FileWriter geoFile = new FileWriter("data.geojson"); //might need to specify location on computer w/ path
             
             /* WILL FIRST TEST ON ONE FILE, THEN LOOP THROUGH DIRECTORY
             //reference: https://stackoverflow.com/questions/1844688/how-to-read-all-files-in-a-folder-from-java
@@ -79,7 +79,7 @@ public class JSONReader {
             Iterator<String> iter = arr.iterator();
             Map<(Long, Long), Integer)> coordColors = new HashMap<>(); //tuple of longs = coordinates; int = color index
             ArrayList<(Long, Long)> totCoords = new ArrayList<>();
-            while (iter.hasNext()) { //MAY FIRST TEST IF ONE ITERATION WORKS BECAUSE OF HOW LONG ONE JSON FILE IS
+            //while (iter.hasNext()) { //MAY FIRST TEST IF ONE ITERATION WORKS BECAUSE OF HOW LONG ONE JSON FILE IS
                 //color relates to speed
                 /* HTML HEX COLOR CODES
                  * RED: 0xFF0000 --> [0, 10)
@@ -92,17 +92,19 @@ public class JSONReader {
                  */
                 JSONObject info = (JSONObject) iter.next();
                 (Long, Long) coord = ( info.get("lng"), info.get("lat") );
+                System.out.println(coord);
                 if (coordColors.containsKey(coord)) { //this line most likely won't be executed on one trip
                     continue;
                 } else {
                     long speed = info.get("speed");
                     int color = colorDet(speed);
+                    System.out.println(color);
                     coordColors.put(coord, color);
                 }
-            }
+            //}
             
             //writing to the geoJSON file 
-            JSONObject result = new JSONObject();
+            /*JSONObject result = new JSONObject();
             result.put("type", "FeatureCollection");
             
             JSONArray feats = new JSONArray();
@@ -120,10 +122,10 @@ public class JSONReader {
                 point.put("color", colorCoords.get(coord).toString());
             }
             
-            result.put("features", feats);
+            result.put("features", feats);*/
       
-            geoFile.write(result.toJSONstring());
-            geoFile.flush(); //flushes the stream ?
+            //geoFile.write(result.toJSONstring());
+            //geoFile.flush(); //flushes the stream ?
             
         } catch (FileNoteFoundException e) {
             e.printStackTrace();
