@@ -91,7 +91,7 @@ public class JSONReader {
                  * VIOLET: 0x3E0099 --> 60+
                  */
                 JSONObject info = (JSONObject) iter.next();
-                (Long, Long) coord = ( info.get("lat"), info.get("lng") );
+                (Long, Long) coord = ( info.get("lng"), info.get("lat") );
                 if (coordColors.containsKey(coord)) { //this line most likely won't be executed on one trip
                     continue;
                 } else {
