@@ -41,7 +41,7 @@ public class JSONReader {
             return 4;
         } else if (speed >= 50.0 && speed < 60.0) {
             return 5;
-        } else if (speed >= 60.0) { //not sure if this is exhaustive but I assume it is
+        } else { //not sure if this is exhaustive but I assume it is
             return 6;
         }
     }
@@ -88,7 +88,7 @@ public class JSONReader {
             //JSONArrays = lists, noted by brackets []
             //assuming file has an array
             //need to store parsed information in some way that can be later used in data 
-            Iterator<String> iter = arr.iterator();
+            Iterator<JSONObject> iter = arr.iterator();
             Map<Tuple<Long>, Integer> coordColors = new HashMap<>(); 
             ArrayList<Tuple<Long>> totCoords = new ArrayList<>();
             //while (iter.hasNext()) { 
@@ -102,15 +102,15 @@ public class JSONReader {
                  * PURPLE: 0x800080 --> [50, 60)
                  * VIOLET: 0x3E0099 --> 60+
                  */
-                JSONObject info = (JSONObject) iter.next();
-                Long lng = info.get("lng"); Long lat = info.get("lat");
+                JSONObject info = iter.next(); 
+                Long lng = (Long) info.get("lng"); Long lat = (Long) info.get("lat");
                 Tuple<Long> coord = new Tuple(lng, lat);
                 System.out.println(coord.item1); 
                 System.out.println(coord.item2);
                 if (coordColors.containsKey(coord)) { //this line most likely won't be executed on one trip
                     //continue;
                 } else {
-                    long speed = info.get("speed");
+                    long speed = (Long) info.get("speed");
                     int color = colorDet(speed);
                     System.out.println(color);
                     coordColors.put(coord, color);
