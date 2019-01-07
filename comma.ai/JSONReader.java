@@ -28,7 +28,7 @@ public class JSONReader {
     //https://www.openstreetmap.org/#map=5/38.007/-95.844
     //https://maptimeboston.github.io/leaflet-intro/
     
-    private static int colorDet(long speed) {
+    static int colorDet(long speed) {
         if (speed >= 0.0 && speed < 10.0) {
             return 0;
         } else if (speed >= 10.0 && speed < 20.0) {
@@ -74,7 +74,7 @@ public class JSONReader {
             }*/ 
             
             //reading the JSON file
-            Object o = parser.parse(new FileReader("2016-07-02--11-56-24.json")); //check if it's file name or path to file
+            Object o = parser.parse(new FileReader("data\\2016-07-02--11-56-24.json")); 
             /* JSON file format
              * 3 objects: start time, coords, end time
              * "start_time": String
@@ -89,8 +89,8 @@ public class JSONReader {
             //assuming file has an array
             //need to store parsed information in some way that can be later used in data 
             Iterator<JSONObject> iter = arr.iterator();
-            Map<Tuple<Long>, Integer> coordColors = new HashMap<>(); 
-            ArrayList<Tuple<Long>> totCoords = new ArrayList<>();
+            Map<Tuple<Double>, Integer> coordColors = new HashMap<>(); 
+            ArrayList<Tuple<Double>> totCoords = new ArrayList<>();
             //while (iter.hasNext()) { 
                 //color relates to speed
                 /* HTML HEX COLOR CODES
@@ -103,14 +103,14 @@ public class JSONReader {
                  * VIOLET: 0x3E0099 --> 60+
                  */
                 JSONObject info = iter.next(); 
-                Long lng = (Long) info.get("lng"); Long lat = (Long) info.get("lat");
-                Tuple<Long> coord = new Tuple(lng, lat);
+                Double lng = (Double) info.get("lng"); Double lat = (Double) info.get("lat");
+                Tuple<Double> coord = new Tuple(lng, lat);
                 System.out.println(coord.item1); 
                 System.out.println(coord.item2);
                 if (coordColors.containsKey(coord)) { //this line most likely won't be executed on one trip
                     //continue;
                 } else {
-                    long speed = (Long) info.get("speed");
+                    Double speed = (Double) info.get("speed");
                     int color = colorDet(speed);
                     System.out.println(color);
                     coordColors.put(coord, color);
