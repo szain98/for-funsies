@@ -3,17 +3,13 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ArrayList;
-
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Iterator;
 
-public class JSONReader {
+public class testWrite {
     //I need the speed for all coordinates for each trip
     //one trip = one JSON file
     //the JSON file contains an ARRAY of coordinates and speed sampled at once per second
@@ -55,16 +51,6 @@ public class JSONReader {
             return "#3e0099";
         }
     }
-
-    static class Tuple<T> {
-        T item1;
-        T item2;
-
-        Tuple(T a, T b) {
-            this.item1 = a;
-            this.item2 = b;
-        }
-    }
     
     public static void main(String[] args) {
         JSONParser parser = new JSONParser();
@@ -99,55 +85,40 @@ public class JSONReader {
             //assuming file has an array
             //need to store parsed information in some way that can be later used in data 
             Iterator<JSONObject> iter = arr.iterator();
-            Map<Tuple<Double>, String> coordColors = new HashMap<>(); 
-            ArrayList<Tuple<Double>> totCoords = new ArrayList<>();
-            while (iter.hasNext()) { 
                 
-                JSONObject info = iter.next(); 
-                Double lng = (Double) info.get("lng"); Double lat = (Double) info.get("lat");
-                Tuple<Double> coord = new Tuple(lng, lat);
-                System.out.println(coord.item1); 
-                System.out.println(coord.item2);
-                if (coordColors.containsKey(coord)) { //this line most likely won't be executed on one trip
-                    continue;
-                } else {
-                    Double speed = (Double) info.get("speed");
-                    String color = colorDet(speed);
-                    System.out.println(color);
-                    coordColors.put(coord, color);
-                }
-            }
+            JSONObject info = iter.next(); 
+            Double lng = (Double) info.get("lng"); Double lat = (Double) info.get("lat");
+            Double speed = (Double) info.get("speed");
+            String color = colorDet(speed);
+            System.out.println(color);
             
             //writing to the geoJSON file 
             JSONObject result = new JSONObject();
-            result.put("type", "FeatureCollection");
             
             JSONArray feats = new JSONArray();
             
-            for (int i = 0; i < totCoords.size(); i++) {
-                (Long, Long) coord = totCoords.get(i);
                 JSONObject point = new JSONObject();
                 
                 point.put("type", "Feature");
 
                 JSONObject props = new JSONObject();
-                props.put("color", colorCoords.get(coord));
+                props.put("color", color);
                 point.put("properties", props);
 
                 JSONObject geo = new JSONObject();
-                geo.put("type", "Point");
                 JSONArray coords = new JSONArray();
-                coords.add(coord[0]); coords.add(coord[1]);
+                coords.add(lng); coords.add(lat);
                 geo.put("coordinates", coords);
+                geo.put("type", "Point");
                 point.put("geometry", geo);
 
                 feats.add(point);
-            }
             
             result.put("features", feats);
+            result.put("type", "FeatureCollection");
       
-            //geoFile.write(result.toJSONString());
-            //geoFile.flush(); //flushes the stream ?
+            geoFile.write(result.toJSONString());
+            geoFile.flush(); //flushes the stream ?
             
         } catch (FileNotFoundException e) {
             e.printStackTrace();
