@@ -106,15 +106,13 @@ public class JSONReader {
                 JSONObject info = iter.next(); 
                 Double lng = (Double) info.get("lng"); Double lat = (Double) info.get("lat");
                 Tuple<Double> coord = new Tuple(lng, lat);
-                System.out.println(coord.item1); 
-                System.out.println(coord.item2);
                 if (coordColors.containsKey(coord)) { //this line most likely won't be executed on one trip
                     continue;
                 } else {
                     Double speed = (Double) info.get("speed");
                     String color = colorDet(speed);
-                    System.out.println(color);
                     coordColors.put(coord, color);
+                    totCoords.add(coord);
                 }
             }
             
@@ -125,19 +123,19 @@ public class JSONReader {
             JSONArray feats = new JSONArray();
             
             for (int i = 0; i < totCoords.size(); i++) {
-                (Long, Long) coord = totCoords.get(i);
+                Tuple<Double> coord = totCoords.get(i);
                 JSONObject point = new JSONObject();
                 
                 point.put("type", "Feature");
 
                 JSONObject props = new JSONObject();
-                props.put("color", colorCoords.get(coord));
+                props.put("color", coordColors.get(coord));
                 point.put("properties", props);
 
                 JSONObject geo = new JSONObject();
                 geo.put("type", "Point");
                 JSONArray coords = new JSONArray();
-                coords.add(coord[0]); coords.add(coord[1]);
+                coords.add(coord.item1); coords.add(coord.item2);
                 geo.put("coordinates", coords);
                 point.put("geometry", geo);
 
@@ -146,8 +144,8 @@ public class JSONReader {
             
             result.put("features", feats);
       
-            //geoFile.write(result.toJSONString());
-            //geoFile.flush(); //flushes the stream ?
+            geoFile.write(result.toJSONString());
+            geoFile.flush(); //flushes the stream ?
             
         } catch (FileNotFoundException e) {
             e.printStackTrace();
