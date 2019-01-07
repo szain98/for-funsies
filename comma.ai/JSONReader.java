@@ -28,7 +28,7 @@ public class JSONReader {
     //https://www.openstreetmap.org/#map=5/38.007/-95.844
     //https://maptimeboston.github.io/leaflet-intro/
     
-    private int colorDet(long speed) {
+    private static int colorDet(long speed) {
         if (speed >= 0.0 && speed < 10.0) {
             return 0;
         } else if (speed >= 10.0 && speed < 20.0) {
@@ -46,11 +46,11 @@ public class JSONReader {
         }
     }
 
-    private class Tuple {
-        Object item1;
-        Object item2;
+    static class Tuple<T> {
+        T item1;
+        T item2;
 
-        private Tuple(Object a, Object b) {
+        Tuple(T a, T b) {
             this.item1 = a;
             this.item2 = b;
         }
@@ -108,7 +108,7 @@ public class JSONReader {
                 System.out.println(coord.item1); 
                 System.out.println(coord.item2);
                 if (coordColors.containsKey(coord)) { //this line most likely won't be executed on one trip
-                    continue;
+                    //continue;
                 } else {
                     long speed = info.get("speed");
                     int color = colorDet(speed);
@@ -141,7 +141,7 @@ public class JSONReader {
             //geoFile.write(result.toJSONstring());
             //geoFile.flush(); //flushes the stream ?
             
-        } catch (FileNoteFoundException e) {
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
