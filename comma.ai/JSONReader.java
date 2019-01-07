@@ -129,7 +129,7 @@ public class JSONReader {
                 point.put("type", "Feature");
 
                 JSONObject props = new JSONObject();
-                props.put("color", coordColors.get(coord));
+                props.put("marker-color", coordColors.get(coord));
                 point.put("properties", props);
 
                 JSONObject geo = new JSONObject();
